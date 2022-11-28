@@ -63,6 +63,7 @@ dwm_date () {
 dwm_volume () {
     VOL="$(pulsemixer --get-volume)"
     printf "VOL: %d%%" "$VOL"
+    [ "$(pulsemixer --get-mute)" = "1" ] && printf " MUTED"
 }
 
 while true; do
