@@ -1,7 +1,7 @@
 #!/bin/bash
 
 dwm_date () {
-    DATE="$(date "+%a %d-%m-%y %T")"
+    DATE="$(date "+%a %d-%m-%y %H:%M")"
     printf "%s" "$DATE"
 }
 
