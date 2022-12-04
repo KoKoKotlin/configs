@@ -63,15 +63,16 @@ static const char unknown_str[] = "";
  * wifi_perc           WiFi signal in percent          interface name (wlan0)
  * wifi_essid          WiFi ESSID                      interface name (wlan0)
  */
-// #define LAPTOP
+#define LAPTOP
 
-#define WIFI_INTERFACE "wlp3s0"
+#define WIFI_INTERFACE "wlp1s0"
 #define ETHERNET_INTERFACE "enp39s0"
 
 #ifdef LAPTOP
 static const struct arg args[] = {
 	/* function format          argument */
-	{ battery_perc, "[BAT %s%] |", "BAT0" },
+	{ battery_state, "[%s", "BAT0"},
+	{ battery_perc, "BAT %s%] |", "BAT0" },
 	{ ram_perc, " [RAM %s] |",	 NULL },
 	{ cpu_perc, " [CPU %s] |",	 NULL },
 	{ run_command, " [%s",    "[ \"$(pulsemixer --get-mute)\" = \"1\" ] && printf \"🔇 \"" },
