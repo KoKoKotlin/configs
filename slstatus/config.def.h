@@ -63,7 +63,7 @@ static const char unknown_str[] = "";
  * wifi_perc           WiFi signal in percent          interface name (wlan0)
  * wifi_essid          WiFi ESSID                      interface name (wlan0)
  */
-#define LAPTOP
+// #define LAPTOP
 
 #define WIFI_INTERFACE "wlp1s0"
 #define ETHERNET_INTERFACE "enp39s0"
@@ -72,7 +72,7 @@ static const char unknown_str[] = "";
 static const struct arg args[] = {
 	/* function format          argument */
 	{ battery_state, "[%s", "BAT0"},
-	{ battery_perc, "BAT %s%] |", "BAT0" },
+	{ battery_perc, "BAT %s%%] |", "BAT0" },
 	{ ram_perc, " [RAM %s] |",	 NULL },
 	{ cpu_perc, " [CPU %s] |",	 NULL },
 	{ run_command, " [%s",    "[ \"$(pulsemixer --get-mute)\" = \"1\" ] && printf \"🔇 \"" },
@@ -85,12 +85,14 @@ static const struct arg args[] = {
 #else
 static const struct arg args[] = {
 	/* function format          argument */
-	{ ram_perc, "[RAM %s] |",	 NULL },
-	{ cpu_perc, " [CPU %s] |",	 NULL },
-	{ run_command, " [%s",    "[ \"$(pulsemixer --get-mute)\" = \"1\" ] && printf \"🔇 \"" },
+	{ disk_perc,   "[STO %s%%",	 "/" },
+	{ disk_free,   " (free: %s)] |",	 "/" },
+	{ ram_perc,    " [RAM %s] |",	 NULL },
+	{ cpu_perc,    " [CPU %s] |",	 NULL },
+	{ run_command, " [%s",         "[ \"$(pulsemixer --get-mute)\" = \"1\" ] && printf \"🔇 \"" },
 	{ run_command, "VOL %s] |",    "pulsemixer --get-volume" },
-	{ ipv4,       " [ETH %s] |",    ETHERNET_INTERFACE },
-	{ datetime, " %s |",           "%a %F %H:%M" },
-	{ username, " User: %s",           "%a %F %H:%M" },
+	{ ipv4,        " [ETH %s] |",  ETHERNET_INTERFACE },
+	{ datetime,    " %s |",        "%a %F %H:%M" },
+	{ username,    " User: %s",    "%a %F %H:%M" },
 };
 #endif
