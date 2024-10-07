@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: download-video <video-url>"
+    exit 69
+fi
+
+python3 -m yt_dlp "$1" \
+    --format 'bestvideo*+bestaudio' \
+    --output "%(title)s.%(ext)s"

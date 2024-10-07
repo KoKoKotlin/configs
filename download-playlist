@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: download-playlist <playlist-id>"
+    exit 69
+fi
+
+python3 -m yt_dlp "https://www.youtube.com/playlist\?list=$1" \
+    --yes-playlist \
+    --format 'bestvideo*+bestaudio' \
+    --output "%(playlist_index)02d-%(title)s.%(ext)s"

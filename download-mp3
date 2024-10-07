@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    echo "Usage: download-playlist <video-url>"
+    exit 69
+fi
+
+python3 -m yt_dlp "$1" \
+    --audio-format mp3 \
+    --embed-thumbnail \
+    --add-metadata \
+    -x -o "%(title)s.mp3"
