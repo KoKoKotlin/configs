@@ -3,3 +3,6 @@ background-color=#1d1f21ff
 text-color=#e6842eff
 border-color=#111111ff
 layer=overlay
+
+[desktop-entry=com.spotify.Client]
+default-timeout=5000
