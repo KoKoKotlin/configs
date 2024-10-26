@@ -9,6 +9,19 @@
 (setq display-line-numbers-type 'relative)
 (setq inhibit-splash-screen t)
 
+(use-package evil
+    :init      ;; tweak evil's configuration before loading it
+    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+    (setq evil-want-keybinding nil)
+    (setq evil-vsplit-window-right t)
+    (setq evil-split-window-below t)
+    (evil-mode))
+  (use-package evil-collection
+    :after evil
+    :config
+    (setq evil-collection-mode-list '(dashboard dired ibuffer))
+    (evil-collection-init))
+
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (global-display-line-numbers-mode 1)
@@ -19,7 +32,7 @@
 (tool-bar-mode 0)
 (electric-pair-mode 1)
 
-(set-frame-font "JetbrainsMono 13" nil t)
+(set-frame-font "JetBrainsMono NF 13" nil t)
 
 ;; load path from shell env even when started from gui
 (when (memq window-system '(mac ns x))
@@ -60,7 +73,7 @@
  '(custom-safe-themes
    '("1711947b59ea934e396f616b81f8be8ab98e7d57ecab649a97632339db3a3d19" "603a831e0f2e466480cdc633ba37a0b1ae3c3e9a4e90183833bc4def3421a961" "e13beeb34b932f309fb2c360a04a460821ca99fe58f69e65557d6c1b10ba18c7" default))
  '(package-selected-packages
-   '(exec-path-from-shell cargo-mode company auto-complete markdown-mode rust-mode magit afternoon-theme)))
+   '(evil-collection evil exec-path-from-shell cargo-mode company auto-complete markdown-mode rust-mode magit afternoon-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
