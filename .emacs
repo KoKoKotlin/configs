@@ -3,6 +3,11 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(package-initialize)
+
 (setq indent-tabs-mode 'only)
 (setq tab-width 4)
 (defvaralias 'c-basic-offset 'tab-width)
@@ -47,7 +52,23 @@
 
 (use-package smex
   :bind (("M-x" . smex))
-  :config (smex-initialize)) 
+  :config (smex-initialize))
+
+;; Company mode
+(use-package company
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-company-mode))
+
+;; Rust mode
+(setq rust-format-on-save t)
+(add-hook 'rust-mode-hook
+          (lambda () (prettify-symbols-mode)))
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
+(setq compilation-scroll-output t)
+(use-package cargo-mode
+  :custom
+  (cargo-mode-use-comint nil))
 
 ;; Company mode
 (use-package company
