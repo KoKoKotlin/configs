@@ -10,7 +10,7 @@ env:
   # each instance of Alacritty. If it is not present, alacritty will
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
-  TERM: xterm-256color
+  TERM: alacritty
 
 window:
   # Window dimensions (changes require restart)
@@ -345,7 +345,7 @@ schemes:
   MonokaiPro: &MonokaiPro
     # Default colors
     primary:
-      background: '#2D2A2E'
+      background: '#212121'
       foreground: '#FCFCFA'
 
     # Normal colors
@@ -579,7 +579,7 @@ schemes:
 # *SolarizedDark
 # *TomorrowNight
 
-colors: *TomorrowNight
+colors: *MonokaiPro
 
 #######################################
 ##       END OF COLOR SCHEMES        ##
