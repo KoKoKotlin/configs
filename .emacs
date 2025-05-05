@@ -3,10 +3,8 @@
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(package-initialize)
+(setq backup-directory-alist `(("." . "~/.emacs-backups")))
+(setq make-backup-files t)  ;; ensure backups are still enabled
 
 (setq indent-tabs-mode 'only)
 (setq tab-width 4)
