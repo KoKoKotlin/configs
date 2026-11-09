@@ -1,0 +1,6 @@
+# suckless build output
+*.o
+*.orig
+*.rej
+dwm/dwm
+slstatus/slstatus
