@@ -1,28 +1,34 @@
-vim.wo.number = true
-vim.wo.relativenumber = true
-vim.bo.autoindent = true
-vim.bo.shiftwidth = 4
-vim.bo.softtabstop = 4
-vim.go.smarttab = true
-vim.go.encoding = "utf-8"
+-- ~/.config/nvim/init.lua
 
-require("packer").startup(function()
-    use 'wbthomason/packer.nvim'
-    use 'vim-airline/vim-airline'
-    use 'vim-airline/vim-airline-themes'
-end)
+-- Options (vim.opt sets them globally; vim.bo/vim.wo only hit the current buffer/window)
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.autoindent = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.smarttab = true
+vim.opt.mouse = "a"
+vim.opt.termguicolors = true
+-- (encoding is always utf-8 in Neovim)
 
-local gset = vim.api.nvim_set_var
-gset("airline_theme", "onedark")
-gset("airline_symbols_ascii", 1)
+-- Plugin manager: lazy.nvim (packer.nvim is archived), bootstraps itself on first start
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+    vim.fn.system({
+        "git", "clone", "--filter=blob:none", "--branch=stable",
+        "https://github.com/folke/lazy.nvim.git", lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
 
--- keymaps for duplicating brackets and quotes 
-local keymap = vim.api.nvim_set_keymap
-local opts = { noremap = true }
-keymap("i", "{", "{}<Esc>ha", opts)
-keymap("i", "(", "()<Esc>ha", opts)
-keymap("i", "[", "[]<Esc>ha", opts)
-keymap("i", "<", "<><Esc>ha", opts)
-keymap("i", "\"", "\"\"<Esc>ha", opts)
-keymap("i", "'", "''<Esc>ha", opts)
-keymap("i", "`", "``<Esc>ha", opts)
+vim.g.airline_theme = "onedark"
+vim.g.airline_symbols_ascii = 1
+
+require("lazy").setup({
+    "vim-airline/vim-airline",
+    "vim-airline/vim-airline-themes",
+    -- Auto-close brackets and quotes; smarter than plain insert mappings
+    -- (skips over the closing char, doesn't pair `<` in comparisons, ...)
+    { "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
+})
