@@ -1,0 +1,40 @@
+# Alacritty 0.15 config — reference: `man 5 alacritty`
+
+[general]
+# Themes: git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+# Swap snazzy.toml for any file in themes/themes/ (Alacritty reloads on save).
+import = ["~/.config/alacritty/themes/themes/snazzy.toml"]
+
+[font]
+size = 13.0   # default is 11.25; Ctrl+= / Ctrl+- / Ctrl+0 adjust it on the fly
+normal = { family = "CaskaydiaCove Nerd Font" }   # Nerd Font => icons in eza etc.
+
+[window]
+padding = { x = 8, y = 6 }
+dynamic_padding = true   # spread leftover pixels evenly around the text
+opacity = 0.95           # needs a compositor (GNOME has one)
+
+[scrolling]
+history = 50000          # default is 10000
+
+[selection]
+save_to_clipboard = true # selecting text copies it
+
+[cursor]
+style = { blinking = "On" }  # shape is still switched by zsh's vi mode
+
+[mouse]
+hide_when_typing = true
+
+# Shift+Enter sends ESC+CR (Alt+Enter), so TUIs such as Claude Code can
+# insert a newline instead of submitting.
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
+
+# New window, opened in the current shell's directory
+[[keyboard.bindings]]
+key = "N"
+mods = "Control|Shift"
+action = "CreateNewWindow"
