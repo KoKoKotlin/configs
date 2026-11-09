@@ -1,0 +1,21 @@
+# ~/.config/helix/config.toml
+
+theme = "catppuccin_mocha"
+
+[editor]
+line-number = "relative"          # relative line numbers (absolute in insert mode)
+cursorline = true                 # highlight current line
+true-color = true                 # better color support
+scrolloff = 8                     # keep some context when scrolling
+mouse = true
+
+# Optional but recommended quality-of-life settings
+bufferline = "multiple"           # show tabs when you have multiple files open
+auto-save = false
+
+# Nice cursor shapes for each mode
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
+
