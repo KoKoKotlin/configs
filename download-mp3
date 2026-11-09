@@ -1,12 +1,12 @@
 #!/bin/sh
-
+# Download a video's audio as MP3 with thumbnail and metadata.
 if [ -z "$1" ]; then
-    echo "Usage: download-playlist <video-url>"
-    exit 69
+    echo "Usage: download-mp3 <video-url>" >&2
+    exit 1
 fi
 
-python3 -m yt_dlp "$1" \
-    --audio-format mp3 \
+exec yt-dlp "$1" \
+    --extract-audio --audio-format mp3 --audio-quality 0 \
     --embed-thumbnail \
-    --add-metadata \
-    -x -o "%(title)s.mp3"
+    --embed-metadata \
+    --output "%(title)s.%(ext)s"

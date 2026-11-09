@@ -1,5 +1,10 @@
 #!/bin/sh
+# Convert any audio/video file(s) to MP3 (VBR ~190 kbit/s).
+if [ "$#" -eq 0 ]; then
+    echo "Usage: to-mp3 <file>..." >&2
+    exit 1
+fi
 
-FILE="$1"
-ffmpeg -i "${FILE}" -vn -ab 128k -ar 44100 -y "${FILE%.webm}.mp3"
-
+for file in "$@"; do
+    ffmpeg -hide_banner -i "$file" -vn -codec:a libmp3lame -q:a 2 -y "${file%.*}.mp3" || exit
+done

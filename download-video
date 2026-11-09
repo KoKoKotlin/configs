@@ -1,10 +1,10 @@
 #!/bin/sh
-
+# Download a video in the best available quality.
 if [ -z "$1" ]; then
-    echo "Usage: download-video <video-url>"
-    exit 69
+    echo "Usage: download-video <video-url>" >&2
+    exit 1
 fi
 
-python3 -m yt_dlp "$1" \
-    --format 'bestvideo*+bestaudio' \
+exec yt-dlp "$1" \
+    --format 'bestvideo*+bestaudio/best' \
     --output "%(title)s.%(ext)s"
