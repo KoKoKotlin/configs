@@ -1,98 +1,123 @@
+;; -*- lexical-binding: t; -*-
+
+;; ---------------------------------------------------------------------------
+;; Packages (Emacs 27+ initialises package.el before this file is read)
+;; ---------------------------------------------------------------------------
 (require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(package-initialize)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
 
+;; ---------------------------------------------------------------------------
+;; Basics
+;; ---------------------------------------------------------------------------
 (setq backup-directory-alist `(("." . "~/.emacs-backups")))
 (setq make-backup-files t)  ;; ensure backups are still enabled
 
-(setq indent-tabs-mode 'only)
-(setq tab-width 4)
-(defvaralias 'c-basic-offset 'tab-width)
+;; Tabs, 4 wide.  These are buffer-local, so they need setq-default.
+(setq-default indent-tabs-mode t
+              tab-width 4
+              c-basic-offset 4)
 (setq display-line-numbers-type 'relative)
 (setq inhibit-splash-screen t)
 
-(use-package evil
-    :init      ;; tweak evil's configuration before loading it
-    (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-    (setq evil-want-keybinding nil)
-    (setq evil-vsplit-window-right t)
-    (setq evil-split-window-below t)
-    (evil-mode))
-  (use-package evil-collection
-    :after evil
-    :config
-    (setq evil-collection-mode-list '(dashboard dired ibuffer))
-    (evil-collection-init))
-
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono NF 13")) ;; also for new frames
 
 (global-display-line-numbers-mode 1)
-(ido-mode 1)
-(ido-everywhere 1)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (electric-pair-mode 1)
 
-(set-frame-font "JetBrainsMono NF 13" nil t)
+;; Built-in vertical completion for M-x, find-file, buffers, ...
+;; (replaces ido + smex, which is unmaintained)
+(fido-vertical-mode 1)
 
-;; load path from shell env even when started from gui
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+;; Load PATH from the shell even when started from the GUI.
+;; Under Wayland, Emacs's window-system is `pgtk', not `x'.
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x pgtk))
+  :config (exec-path-from-shell-initialize))
 
-;; load the theme without prompting the safety message
-(load-theme 'afternoon 1)
+;; Load the theme without prompting the safety message
+(use-package afternoon-theme
+  :ensure t
+  :config (load-theme 'afternoon t))
 
-;; smex
-(require 'smex)
-(smex-initialize)
+;; ---------------------------------------------------------------------------
+;; Evil
+;; ---------------------------------------------------------------------------
+(use-package evil
+  :ensure t
+  :init      ;; tweak evil's configuration before loading it
+  (setq evil-want-keybinding nil)   ;; required by evil-collection
+  (setq evil-vsplit-window-right t)
+  (setq evil-split-window-below t)
+  :config
+  (evil-mode 1)
+  (evil-set-initial-state 'compilation-mode 'emacs)
+  (evil-set-initial-state 'dired-mode 'emacs))
 
-(use-package smex
-  :bind (("M-x" . smex))
-  :config (smex-initialize))
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (setq evil-collection-mode-list '(dashboard ibuffer))
+  (evil-collection-init))
 
-;; Company mode
+(use-package evil-mc
+  :ensure t
+  :after evil
+  :config (global-evil-mc-mode 1))
+
+;; ---------------------------------------------------------------------------
+;; Tools
+;; ---------------------------------------------------------------------------
+(use-package elcord              ;; Discord rich presence
+  :ensure t
+  :config (elcord-mode 1))
+
 (use-package company
   :ensure t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  :hook (after-init . global-company-mode))
 
-;; Rust mode
-(setq rust-format-on-save t)
-(add-hook 'rust-mode-hook
-          (lambda () (prettify-symbols-mode)))
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
+(use-package magit :ensure t :defer t)
+
+;; ---------------------------------------------------------------------------
+;; Rust
+;; ---------------------------------------------------------------------------
 (setq compilation-scroll-output t)
-(use-package cargo-mode
-  :custom
-  (cargo-mode-use-comint nil))
 
-;; Company mode
-(use-package company
+(use-package rust-mode
   :ensure t
-  :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  :init (setq rust-format-on-save t)
+  :hook (rust-mode . prettify-symbols-mode))
 
-;; Rust mode
-(setq rust-format-on-save t)
-(add-hook 'rust-mode-hook
-          (lambda () (prettify-symbols-mode)))
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
-(setq compilation-scroll-output t)
 (use-package cargo-mode
-  :custom
-  (cargo-mode-use-comint nil))
+  :ensure t
+  :hook (rust-mode . cargo-minor-mode)
+  :custom (cargo-mode-use-comint nil))
 
+;; ---------------------------------------------------------------------------
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("1711947b59ea934e396f616b81f8be8ab98e7d57ecab649a97632339db3a3d19" "603a831e0f2e466480cdc633ba37a0b1ae3c3e9a4e90183833bc4def3421a961" "e13beeb34b932f309fb2c360a04a460821ca99fe58f69e65557d6c1b10ba18c7" default))
+   '("1711947b59ea934e396f616b81f8be8ab98e7d57ecab649a97632339db3a3d19"
+     "455aeeff00c55cac03e7cd9ee5f7545cd6b5656e1f2e6765e92f6ee897ef502b"
+     "0a076beea7570c3047225baf40783d7ce1576b8b98cdcd3e5622808875ab8c00"
+     "eead109a0c4c72e3926617c5eea8696eb3236ee885a92ee5ab875cec0142c9f2"
+     default))
  '(package-selected-packages
-   '(evil-collection evil exec-path-from-shell cargo-mode company auto-complete markdown-mode rust-mode magit afternoon-theme)))
+   '(abyss-theme acme-theme afternoon-theme amber-glow-theme annalist
+		 auctex cargo-mode comment-tags company elcord evil
+		 evil-collection evil-mc exec-path-from-shell magit
+		 rust-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
