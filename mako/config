@@ -1,8 +1,10 @@
+default-timeout=5000
 font=JetBrainsMono NF 13
 background-color=#1d1f21ff
 text-color=#e6842eff
 border-color=#111111ff
 layer=overlay
+max-visible=5
 
 [desktop-entry=com.spotify.Client]
 default-timeout=5000
